@@ -19,7 +19,7 @@ def main():
         st.dataframe(df)
 
         fig = shelp.get_schedulePlot()
-        st.pyplot(fig)
+        st.pyplot(fig,use_container_width=True)
     else:
         st.subheader("Data")
 

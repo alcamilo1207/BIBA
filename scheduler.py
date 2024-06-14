@@ -136,7 +136,7 @@ class Scheduler:
             self.schedule.append([0, m_id, start_timestamp, duration, 0.0])
 
     def plot_schedule(self):
-        fig, ax = plt.subplots(figsize=(9.2, 5))
+        fig, ax = plt.subplots()
         ax.invert_yaxis()
         ax.set_xlabel("Time [minutes]")
         ax.set_xlim(0,1440)
