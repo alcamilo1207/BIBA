@@ -5,7 +5,7 @@ import json_req as jr
 def main():
     st.set_page_config(layout="wide")
 
-    st.subheader("Mapa PML")
+    st.subheader("Energy prices")
     menu = ["Inicio","Sobre nosotros"]
 
     choice = st.sidebar.selectbox("Menu",menu)
