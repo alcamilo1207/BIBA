@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import getprices
 
 px.set_mapbox_access_token("pk.eyJ1IjoiYWxjYW1pbG8yIiwiYSI6ImNsdzdmODJoMDIzbWYya3BmdjVidWp3ajcifQ.8NGS13nqm6-MNQ_-SzQbgw")
 
