@@ -1,8 +1,8 @@
 import streamlit as st
 import json_req as jr
 import schedule_helper as shelp
-import mpld3
-import streamlit.components.v1 as components
+#import mpld3
+#import streamlit.components.v1 as components
 
 
 def main():
@@ -21,9 +21,9 @@ def main():
         st.dataframe(df)
 
         fig = shelp.get_schedulePlot()
-        fig_html = mpld3.fig_to_html(fig)
-        components.html(fig_html, height=600)
-        #st.pyplot(fig,use_container_width=True)
+        #fig_html = mpld3.fig_to_html(fig)
+        #components.html(fig_html, height=600)
+        st.pyplot(fig,use_container_width=True)
     else:
         st.subheader("Data")
 
