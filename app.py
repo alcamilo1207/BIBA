@@ -1,20 +1,30 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import getprices
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
-px.set_mapbox_access_token("pk.eyJ1IjoiYWxjYW1pbG8yIiwiYSI6ImNsdzdmODJoMDIzbWYya3BmdjVidWp3ajcifQ.8NGS13nqm6-MNQ_-SzQbgw")
-
-
-def load_data(data):
-    return pd.read_csv(data)
+@st.experimental_singleton
+def get_driver():
+    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 def my_function():
     st.write("Button has been clicked!")
     # Add any additional logic you want to run when the button is clicked
-    getprices.ff()
+    options = Options()
+    options.add_argument('--disable-gpu')
+    options.add_argument('--headless')
+    
+    driver = get_driver()
+    driver.get('https://www.iana.org/help/example-domains')
+    
+    st.code(driver.page_source)
     return "Function executed successfully!"
 
+def load_data(data):
+    return pd.read_csv(data)
+    
 def main():
     st.set_page_config(layout="wide")
 
