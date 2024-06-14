@@ -15,10 +15,10 @@ def get_prices():
     }
 
     # Get the current date and time
-    now = datetime.now()
+    date = datetime.now() + timedelta(days=1)
 
     # Get the current day datetime starting at 00:00 hours
-    current_day_start = datetime(now.year, now.month, now.day, 0, 0, 0)
+    current_day_start = datetime(date.year, date.month, date.day, 0, 0, 0)
 
     # Get the next day datetime starting at 00:00 hours
     next_day_start = current_day_start + timedelta(days=1)
