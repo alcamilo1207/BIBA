@@ -14,15 +14,19 @@ def get_prices():
         'Accept': 'application/json, text/plain, */*'
     }
 
-    # Get the current datetime
-    current_datetime = datetime.now.day()
+    # Get the current date and time
+    now = datetime.now()
 
-    # Calculate the next day's datetime
-    next_day_datetime = current_datetime + timedelta(days=1)
+    # Get the current day datetime starting at 00:00 hours
+    current_day_start = datetime(now.year, now.month, now.day, 0, 0, 0)
+
+    # Get the next day datetime starting at 00:00 hours
+    next_day_start = current_day_start + timedelta(days=1)
+
 
     # Format the datetimes as strings for better readability
-    current_datetime_str = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    next_day_datetime_str = next_day_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    current_datetime_str = current_day_start.strftime("%Y-%m-%d %H:%M:%S")
+    next_day_datetime_str = next_day_start.strftime("%Y-%m-%d %H:%M:%S")
 
     # Print the current datetime and the next day's datetime
     st.write("Current datetime:", current_datetime_str)
