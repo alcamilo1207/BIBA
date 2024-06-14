@@ -44,7 +44,7 @@ def main_sidebar():
 
 
 def site_extraction_page():
-    SAMPLE_URL = "https://spectrum.ieee.org/3d-printed-rocket"
+    SAMPLE_URL = "https://www.smard.de/en/downloadcenter/download-market-data/?downloadAttributes=%7B%22selectedCategory%22:3,%22selectedSubCategory%22:8,%22selectedRegion%22:%22DE-LU%22,%22selectedFileType%22:%22CSV%22,%22from%22:1718143200000,%22to%22:1718488799999%7D"
     url = st.text_input(label="URL", placeholder="https://example.com", value=SAMPLE_URL)
 
     clicked = st.button("Load Page Content",type="primary")
