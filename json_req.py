@@ -2,7 +2,7 @@ import requests
 import json
 import pandas as pd
 import streamlit as st
-from datetime import datetime
+from datetime import datetime,timedelta
 
 def get_prices():
     # Define the URL to send the request to
@@ -15,12 +15,18 @@ def get_prices():
     }
 
     # Get the current datetime
-    now = datetime.now()
+    current_datetime = datetime.now()
 
-    # Convert datetime to Unix timestamp
-    timestamp = int(now.timestamp())
+    # Calculate the next day's datetime
+    next_day_datetime = current_datetime + timedelta(days=1)
 
-    st.write(f"Date time to integer {timestamp}")
+    # Format the datetimes as strings for better readability
+    current_datetime_str = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    next_day_datetime_str = next_day_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+    # Print the current datetime and the next day's datetime
+    st.write("Current datetime:", current_datetime_str)
+    st.write("Next day's datetime:", next_day_datetime_str)
 
     # Define the data to be sent in the request
     data = {"request_form":[{"format":"CSV","moduleIds":[8004169,8004170,8000251,8005078,8000252,8000253,8000254,8000255,8000256,8000257,8000258,8000259,8000260,8000261,8000262,8004996,8004997],"region":"DE","timestamp_from":1718056800000,"timestamp_to":1719007200000,"type":"discrete","language":"en","resolution":"hour"}]}
