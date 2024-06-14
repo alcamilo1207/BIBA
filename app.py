@@ -16,7 +16,7 @@ def get_website_content(url):
     try:
         # Using on Local
         options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
+        #options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
         options.add_experimental_option("prefs", {
@@ -39,15 +39,15 @@ def get_website_content(url):
         # Click the download button
         first_button.click()
 
-        print("--> Updating server")
-        print("Waiting...")
+        st.write("--> Updating server")
+        st.write("Waiting...")
         time.sleep(5)
 
         driver.execute_script("arguments[0].scrollIntoView();", download_button)
         download_button.click()
 
-        print("--> Downloading file")
-        print("Waiting...")
+        st.write("--> Downloading file")
+        st.write("Waiting...")
 
         # Wait for the file to download
         time.sleep(3) 
