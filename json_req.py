@@ -32,8 +32,8 @@ def get_prices():
     st.write("Current datetime:", current_datetime_str)
     st.write("Next day's datetime:", next_day_datetime_str)
 
-    st.write("Current datetime integer:", int(current_day_start.timestamp()), "their:",1718056800000)
-    st.write("Next day's datetime:", int(next_day_start.timestamp()),"their",1719007200000)
+    st.write("Current datetime integer:", int(current_day_start.timestamp()*1000), "their:",1718056800000)
+    st.write("Next day's datetime:", int(next_day_start.timestamp()*1000),"their",1719007200000)
 
     start_date = int(current_day_start.timestamp())
     end_date = int(next_day_start.timestamp())
