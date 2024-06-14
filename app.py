@@ -13,7 +13,7 @@ def main():
 
     if choice == "Inicio":
         info = """
-            SMARD receives the data directly from the European Network of Transmission System Operators for Electricity (ENTSO-E). Only data verified by the Bundesnetzagentur is published on SMARD. The Bundesnetzagentur is constantly exchanging information with the transmission network operators (TSOs) in order to continuously improve data quality.
+            Data source: Bundesnetzagentur | SMARD.de\nSMARD receives the data directly from the European Network of Transmission System Operators for Electricity (ENTSO-E). \nOnly data verified by the Bundesnetzagentur is published on SMARD. \nThe Bundesnetzagentur is constantly exchanging information with the transmission network operators (TSOs) in order to continuously improve data quality.https://www.smard.de/en/datennutzung
         """
         st.write(info)
         # Create a dataframe
