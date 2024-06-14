@@ -24,7 +24,7 @@ def get_prices():
     start_datetime = current_day + timedelta(days=1) - timedelta(hours=2)
 
     # Get the next day datetime starting at 00:00 hours
-    end_datetime = start_datetime + timedelta(days=1) - timedelta(hours=1)
+    end_datetime = start_datetime + timedelta(days=1)
 
     # Format the datetimes as strings for better readability
     current_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M:%S")
@@ -50,16 +50,15 @@ def get_prices():
     # Check the response status code
     if response.status_code == 200:
         # Successful request
-        st.write("Request was successful.")
-            # Decode the response content using utf-8-sig
-
+            
+        # Decode the response content using utf-8-sig
         csv_str = response.content.decode("utf-8")
-
-        # print("\n\n",type(csv_str))
         
         df = pd.DataFrame([x.split(';') for x in csv_str.split('\n')])
-        # Print the parsed JSON response
-        print("\n\n",df)
+
+        # Dropping last row
+        df = df.drop(df.index[-1]) 
+
         return df
     else:
         # Unsuccessful request
