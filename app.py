@@ -21,7 +21,7 @@ def main():
         st.subheader("Data")
         fig = shelp.get_schedulePlot()
         fig_html = mpld3.fig_to_html(fig)
-        components.html(fig_html, width=1200)
+        components.html(fig_html, width=3200, width=1200)
         #st.pyplot(fig,use_container_width=True)
 
 
