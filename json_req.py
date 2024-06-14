@@ -24,7 +24,7 @@ def get_prices():
     start_datetime = current_day + timedelta(days=1) - timedelta(hours=2)
 
     # Get the next day datetime starting at 00:00 hours
-    end_datetime = start_datetime + timedelta(days=1)
+    end_datetime = start_datetime + timedelta(days=1) - timedelta(hours=1)
 
     # Format the datetimes as strings for better readability
     current_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M:%S")
@@ -37,8 +37,6 @@ def get_prices():
     start_date = int(start_datetime.timestamp()*1000)
     end_date = int(end_datetime.timestamp()*1000)
 
-    st.write("Current datetime integer:", start_date, "their:",1718056800000)
-    st.write("Next day's datetime:", end_date,"their",1719007200000)
 
     # Define the data to be sent in the request
     data = {"request_form":[{"format":"CSV","moduleIds":[8004169,8004170,8000251,8005078,8000252,8000253,8000254,8000255,8000256,8000257,8000258,8000259,8000260,8000261,8000262,8004996,8004997],"region":"DE","timestamp_from":start_date,"timestamp_to":end_date,"type":"discrete","language":"en","resolution":"hour"}]}
