@@ -1,3 +1,4 @@
 streamlit
 plotly
 selenium
+webdriver-manager
