@@ -8,6 +8,11 @@ px.set_mapbox_access_token("pk.eyJ1IjoiYWxjYW1pbG8yIiwiYSI6ImNsdzdmODJoMDIzbWYya
 def load_data(data):
     return pd.read_csv(data)
 
+def my_function():
+    st.write("Button has been clicked!")
+    # Add any additional logic you want to run when the button is clicked
+    return "Function executed successfully!"
+
 def main():
     st.set_page_config(layout="wide")
 
@@ -17,13 +22,15 @@ def main():
     choice = st.sidebar.selectbox("Menu",menu)
 
     if choice == "Inicio":
-        # Create a dataframe
-        df = load_data("data.csv")
-        # Display the map
-        fig = px.scatter_mapbox(df,lat="Latitude",lon="Longitude",hover_name="Name",size="total_miembros",mapbox_style="dark",zoom=11)
-        fig.update_traces(marker=dict(color='red'))
-        fig.update_layout(height=600)
-        st.plotly_chart(fig,use_container_width=True,heigth=600)
+        # Streamlit application
+        st.title("Streamlit Button Click Example")
+
+        st.write("Click the button below to run the function.")
+
+        if st.button("Run Function"):
+            result = my_function()
+            st.write(result)
+
     else:
         st.subheader("Data")
         df = load_data("data.csv")
