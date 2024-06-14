@@ -10,7 +10,7 @@ def main():
 
     choice = st.sidebar.selectbox("Menu",menu)
 
-    if choice == "Inicio":
+    if choice == "Energy prices data":
         st.subheader("Day-ahead energy prices forecast")
         st.write("Data source: Bundesnetzagentur | SMARD.de. More info: https://www.smard.de/en/datennutzung")
         # Create a dataframe
