@@ -32,14 +32,14 @@ def get_prices():
     st.write("Current datetime:", current_datetime_str)
     st.write("Next day's datetime:", next_day_datetime_str)
 
-    st.write("Current datetime integer:", int(current_day_start.timestamp()*1000), "their:",1718056800000)
-    st.write("Next day's datetime:", int(next_day_start.timestamp()*1000),"their",1719007200000)
+    start_date = int(current_day_start.timestamp()*1000)
+    end_date = int(next_day_start.timestamp()*1000)
 
-    start_date = int(current_day_start.timestamp())
-    end_date = int(next_day_start.timestamp())
+    st.write("Current datetime integer:", start_date, "their:",1718056800000)
+    st.write("Next day's datetime:", end_date,"their",1719007200000)
 
     # Define the data to be sent in the request
-    data = {"request_form":[{"format":"CSV","moduleIds":[8004169,8004170,8000251,8005078,8000252,8000253,8000254,8000255,8000256,8000257,8000258,8000259,8000260,8000261,8000262,8004996,8004997],"region":"DE","timestamp_from":1718056800000,"timestamp_to":1719007200000,"type":"discrete","language":"en","resolution":"hour"}]}
+    data = {"request_form":[{"format":"CSV","moduleIds":[8004169,8004170,8000251,8005078,8000252,8000253,8000254,8000255,8000256,8000257,8000258,8000259,8000260,8000261,8000262,8004996,8004997],"region":"DE","timestamp_from":start_date,"timestamp_to":end_date,"type":"discrete","language":"en","resolution":"hour"}]}
 
     # Convert the data dictionary to a JSON string
     json_data = json.dumps(data)
