@@ -14,7 +14,7 @@ def get_prices():
     }
 
     # Define the data to be sent in the request
-    data = {"request_form":[{"format":"CSV","moduleIds":[8004169,8004170,8000251,8005078,8000252,8000253,8000254,8000255,8000256,8000257,8000258,8000259,8000260,8000261,8000262,8004996,8004997],"region":"DE-LU","timestamp_from":1718056800000,"timestamp_to":1719007200000,"type":"discrete","language":"en","resolution":"day"}]}
+    data = {"request_form":[{"format":"CSV","moduleIds":[8004169,8004170,8000251,8005078,8000252,8000253,8000254,8000255,8000256,8000257,8000258,8000259,8000260,8000261,8000262,8004996,8004997],"region":"DE","timestamp_from":1718056800000,"timestamp_to":1719007200000,"type":"discrete","language":"en","resolution":"hour"}]}
 
     # Convert the data dictionary to a JSON string
     json_data = json.dumps(data)
