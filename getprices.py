@@ -3,24 +3,29 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 import time
 import streamlit as st
-import os, sys
 
-@st.experimental_singleton
-def installff():
-  os.system('sbase install geckodriver')
-  os.system('ln -s /home/appuser/venv/lib/python3.7/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.firefox import GeckoDriverManager
 
-_ = installff()
-from selenium import webdriver
-from selenium.webdriver import FirefoxOptions
+URL = "https://streamlit.io/community"
+TIMEOUT = 20
 
 def ff():
-    opts = FirefoxOptions()
-    opts.add_argument("--headless")
-    browser = webdriver.Firefox(options=opts)
-    
-    browser.get('https://app.electricitymaps.com/zone/BE')
-    st.write(browser.page_source)
+  st.title("Test Selenium")
+  firefoxOptions = Options()
+  firefoxOptions.add_argument("--headless")
+  service = Service(GeckoDriverManager().install())
+  driver = webdriver.Firefox(
+      options=firefoxOptions,
+      service=service,
+  )
+  driver.get(URL)
+  st.write(driver.page_source)
 
 def scrap_data():
     # Configure Chrome options
