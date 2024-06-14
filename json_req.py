@@ -15,25 +15,27 @@ def get_prices():
     }
 
     # Get the current date and time
-    date = datetime.now() + timedelta(days=1)
+    now = datetime.now()
 
     # Get the current day datetime starting at 00:00 hours
-    current_day_start = datetime(date.year, date.month, date.day, 0, 0, 0)
+    current_day = datetime(now.year, now.month, now.day, 0, 0, 0)
 
     # Get the next day datetime starting at 00:00 hours
-    next_day_start = current_day_start + timedelta(days=1)
+    start_datetime = current_day + timedelta(days=1)
 
+    # Get the next day datetime starting at 00:00 hours
+    end_datetime = start_datetime + timedelta(days=1)
 
     # Format the datetimes as strings for better readability
-    current_datetime_str = current_day_start.strftime("%Y-%m-%d %H:%M:%S")
-    next_day_datetime_str = next_day_start.strftime("%Y-%m-%d %H:%M:%S")
+    current_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    next_day_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M:%S")
 
     # Print the current datetime and the next day's datetime
     st.write("Current datetime:", current_datetime_str)
     st.write("Next day's datetime:", next_day_datetime_str)
 
-    start_date = int(current_day_start.timestamp()*1000)
-    end_date = int(next_day_start.timestamp()*1000)
+    start_date = int(start_datetime.timestamp()*1000)
+    end_date = int(end_datetime.timestamp()*1000)
 
     st.write("Current datetime integer:", start_date, "their:",1718056800000)
     st.write("Next day's datetime:", end_date,"their",1719007200000)
