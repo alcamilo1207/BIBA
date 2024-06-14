@@ -12,7 +12,7 @@ def main():
 
     if choice == "Inicio":
         # Create a dataframe
-        df = jr.get_data()
+        df = jr.get_prices()
         st.dataframe(df)
     else:
         st.subheader("Data")

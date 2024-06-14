@@ -3,7 +3,7 @@ import json
 import pandas as pd
 import streamlit as st
 
-def get_pries():
+def get_prices():
     # Define the URL to send the request to
     url = 'https://www.smard.de/nip-download-manager/nip/download/market-data'  # Replace with the actual URL
 
