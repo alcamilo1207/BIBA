@@ -18,7 +18,7 @@ def ff():
     opts.add_argument("--headless")
     browser = webdriver.Firefox(options=opts)
     
-    browser.get('http://example.com')
+    browser.get('https://app.electricitymaps.com/zone/BE')
     st.write(browser.page_source)
 
 def scrap_data():
