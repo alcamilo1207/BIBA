@@ -16,7 +16,7 @@ def get_website_content(url):
     try:
         # Using on Local
         options = webdriver.ChromeOptions()
-        #options.add_argument('--headless')
+        options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
         options.add_experimental_option("prefs", {
