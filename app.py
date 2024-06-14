@@ -18,15 +18,41 @@ def get_website_content(url):
         options.add_argument('--headless')
         options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1920,1200')
+        options.add_experimental_option("prefs", {
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "safebrowsing.enabled": True,
+            "download.default_directory": r"C:\Users\Camilo Lopez-Salazar\Desktop\code"  # Change this to your desired download directory
+            #"download.default_directory": r"C:\Users\Camilo Laptop\PycharmProjects\ATLimplementation\BIBA\Austing"  # Change this to your desired download directory
+        })
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),
                                   options=options)
         st.write(f"DEBUG:DRIVER:{driver}")
         driver.get(url)
         time.sleep(5)
-        html_doc = driver.page_source
+
+        # Locate the download button (inspect the page to get the correct selector)
+        first_button = driver.find_element(By.XPATH, '/html/body/main/div[2]/div/div[2]/download-center/download-center-market-data/form/div/ui-select[4]/div/select/option[2]')
+        download_button = driver.find_element(By.XPATH, '/html/body/main/div[2]/div/div[2]/download-center/download-center-market-data/form/div/button')
+
+        # Click the download button
+        first_button.click()
+
+        print("--> Updating server")
+        print("Waiting...")
+        time.sleep(5)
+
+        driver.execute_script("arguments[0].scrollIntoView();", download_button)
+        download_button.click()
+
+        print("--> Downloading file")
+        print("Waiting...")
+
+        # Wait for the file to download
+        time.sleep(3) 
+
         driver.quit()
-        soup = BeautifulSoup(html_doc, "html.parser")
-        return soup.get_text()
+
     except Exception as e:
         st.write(f"DEBUG:INIT_DRIVER:ERROR:{e}")
     finally:
@@ -51,8 +77,8 @@ def site_extraction_page():
     if clicked:
         with st.container(border=True):
             with st.spinner("Loading page website..."):
-                content = get_website_content(url)
-                st.write(content)
+                get_website_content(url)
+                st.write("File successfully downloaded")
 
 
 if __name__ == "__main__":
