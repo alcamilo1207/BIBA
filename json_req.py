@@ -15,7 +15,7 @@ def get_prices():
     }
 
     # Get the current datetime
-    current_datetime = datetime.now()
+    current_datetime = datetime.now.day()
 
     # Calculate the next day's datetime
     next_day_datetime = current_datetime + timedelta(days=1)
