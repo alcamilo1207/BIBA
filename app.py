@@ -12,7 +12,7 @@ def load_data(data):
 def my_function():
     st.write("Button has been clicked!")
     # Add any additional logic you want to run when the button is clicked
-    getprices.scrap_data()
+    getprices.ff()
     return "Function executed successfully!"
 
 def main():
