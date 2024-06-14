@@ -20,20 +20,13 @@ def get_prices():
     # Get the current day datetime starting at 00:00 hours
     current_day = datetime(now.year, now.month, now.day, 0, 0, 0)
 
-    # Get the next day datetime starting at 00:00 hours
+    # Get the next day datetime starting at 00:00 hours (2 hours shift corrected)
     start_datetime = current_day + timedelta(days=1) - timedelta(hours=2)
 
-    # Get the next day datetime starting at 00:00 hours
+    # Get the other next day datetime starting at 00:00 hours
     end_datetime = start_datetime + timedelta(days=1)
 
-    # Format the datetimes as strings for better readability
-    current_datetime_str = start_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    next_day_datetime_str = end_datetime.strftime("%Y-%m-%d %H:%M:%S")
-
-    # Print the current datetime and the next day's datetime
-    st.write("Current datetime:", current_datetime_str)
-    st.write("Next day's datetime:", next_day_datetime_str)
-
+    # Converting datetime to integer format
     start_date = int(start_datetime.timestamp()*1000)
     end_date = int(end_datetime.timestamp()*1000)
 
@@ -54,6 +47,7 @@ def get_prices():
         # Decode the response content using utf-8-sig
         csv_str = response.content.decode("utf-8")
         
+        # Convert string to data frame
         df = pd.DataFrame([x.split(';') for x in csv_str.split('\n')])
 
         # Dropping last row
