@@ -1,29 +1,124 @@
+import pandas as pd
 import streamlit as st
 import json_req as jr
 import schedule_helper as shelp
-import mpld3
-import streamlit.components.v1 as components
+import plotly.graph_objects as go
+import matplotlib.cm as cm
+import matplotlib as mpl
+import numpy as np
+import plotly.express as px
 
+st.set_page_config(layout='wide')
+
+def duration_to_color(all_durations, duration):
+    cmap = cm.plasma  # choose a colormap
+    norm = mpl.colors.Normalize(vmin=min(all_durations), vmax=max(all_durations))  # Normalizer
+    c = cmap(norm(duration))
+    color = f"rgb({c[0]*255}, {c[1]*255}, {c[2]*255}, {c[3]})"
+    return color
 
 def main():
     menu = ["Energy prices data","Scheduler"]
-
     choice = st.sidebar.selectbox("Menu",menu)
+    st.subheader("Data")
 
-    if choice == "Energy prices data":
+    # Scheduler data
+    scheduler = shelp.get_scheduler()
+    sch_df = scheduler.get_schedule()
+
+    # power data
+    pw_df = shelp.get_power(scheduler)
+
+    #Scheduler plot
+
+    dates = pd.date_range('2022-01-01', periods=12, freq='2H')
+    x_values = [i*60*2 for i in range(12)]
+
+    fig1 = px.bar(sch_df,
+                 y="assigned_to",
+                 x="actual_duration_int",
+                 color="energy",
+                 orientation="h",
+                 color_continuous_scale='inferno',
+                 hover_name="name",
+                 labels={
+                     "assigned_to": "assigned to",
+                     "actual_duration_int": "",
+                     "energy": "energy [kWh]",
+                 },
+                title="Day-ahead schedule")
+
+    fig1.update_xaxes(tickvals=x_values, ticktext=[d.strftime('%H:00') for d in dates])
+    fig1.update_traces(width=.9)
+    fig1.update_coloraxes(colorbar={'orientation':'h', 'thickness':15, 'y': 1.1})
+    fig1.update_layout(height=300,
+            margin=dict(
+            l=0,
+            r=0,
+            b=25,
+            t=0,
+            pad=10
+        ),)
+
+    fig2 = go.Figure()
+    for i in range(pw_df.shape[1]):
+        if i == pw_df.shape[1]-1:
+            name = f"Total power"
+        else:
+            name = f"machine {i}"
+
+        fig2.add_trace(go.Scatter(
+            name=name,
+            x=pw_df.index.values,
+            y=pw_df[i],
+            fill='tozeroy',
+        ))
+
+    #'rgba(31,119,180,0.5)
+
+    fig2.update_xaxes(tickvals=x_values, ticktext=[d.strftime('%H:00') for d in dates])
+    fig2.update_layout(
+        height=300,
+        title="Factory total power",
+        yaxis_title="Power [kW]",
+        margin=dict(
+            l=95,
+            r=30,
+            b=0,
+            t=50,
+            pad=4
+        ),
+        legend=dict(
+            orientation='h',
+            yanchor="top",
+            y=-0.3,
+            xanchor="left",
+            x=0
+        )
+    )
+
+    # View in UI
+    with st.container():
+        # Your container content here
+        st.plotly_chart(fig1,use_container_width=True)
+
+        st.plotly_chart(fig2, use_container_width=True)
+
+        st.write("Dataset 1")
+        st.dataframe(sch_df)
+
+        # Data
         st.subheader("Day-ahead energy prices forecast")
         st.write("Data source: Bundesnetzagentur | SMARD.de. More info: https://www.smard.de/en/datennutzung")
-        # Create a dataframe
-        df = jr.get_prices()
-        st.dataframe(df)
+        data_df = jr.get_prices()
+        st.dataframe(data_df)
+
+
+    if choice == "Energy prices data":
+        pass
 
     else:
-        st.subheader("Data")
-        fig = shelp.get_schedulePlot()
-        fig_html = mpld3.fig_to_html(fig)
-        components.html(fig_html, width=3200, height=1200)
-        #st.pyplot(fig,use_container_width=True)
-
+        pass
 
 
 
