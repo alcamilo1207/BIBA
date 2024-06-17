@@ -90,5 +90,5 @@ def calculate_energy_cost(date,job_schedule,power_schedule):
     total_production = sizes.sum()
     total_energy = energies.sum()
 
-    performance = total_production/total_energy/total_cost
+    performance = total_production/(total_energy*total_cost)
     return performance, total_cost, total_energy, total_production, total_number_of_jobs
