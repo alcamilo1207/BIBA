@@ -3,9 +3,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-load = True
 
-def get_scheduler(verbose=False):
+def get_scheduler(load,verbose=False):
     sch_object = sh.Scheduler()
     if load:
         scheduler = sch_object.load("saved_sch")
@@ -63,7 +62,7 @@ def get_power(scheduler):
     df = pd.DataFrame(np.transpose(power_schedules))
     return df
 
-scheduler = get_scheduler()
-df = get_power(scheduler)
-print(df[3])
+# scheduler = get_scheduler()
+# df = get_power(scheduler)
+# print(df[3])
 

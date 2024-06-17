@@ -7,6 +7,7 @@ import matplotlib.cm as cm
 import matplotlib as mpl
 import numpy as np
 import plotly.express as px
+from datetime import datetime,timedelta
 
 st.set_page_config(layout='wide')
 
@@ -18,12 +19,19 @@ def duration_to_color(all_durations, duration):
     return color
 
 def main():
-    menu = ["Energy prices data","Scheduler"]
-    choice = st.sidebar.selectbox("Menu",menu)
+    generate = st.sidebar.button(label="Generate random schedule")
+
+    date_pick = st.sidebar.date_input(label="Select date")
+
     st.subheader("Data")
 
     # Scheduler data
-    scheduler = shelp.get_scheduler()
+    if generate:
+        scheduler = shelp.get_scheduler(load=False)
+
+    else:
+        scheduler = shelp.get_scheduler(load=True)
+
     sch_df = scheduler.get_schedule()
 
     # power data
@@ -61,6 +69,7 @@ def main():
         ),)
 
     fig2 = go.Figure()
+
     for i in range(pw_df.shape[1]):
         if i == pw_df.shape[1]-1:
             name = f"Total power"
@@ -104,21 +113,15 @@ def main():
 
         st.plotly_chart(fig2, use_container_width=True)
 
-        st.write("Dataset 1")
+        st.write("Schedule Dataset")
         st.dataframe(sch_df)
 
         # Data
         st.subheader("Day-ahead energy prices forecast")
         st.write("Data source: Bundesnetzagentur | SMARD.de. More info: https://www.smard.de/en/datennutzung")
-        data_df = jr.get_prices()
+        data_df = jr.get_prices(date_pick)
         st.dataframe(data_df)
 
-
-    if choice == "Energy prices data":
-        pass
-
-    else:
-        pass
 
 
 

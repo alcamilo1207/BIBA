@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime,timedelta
 
-def get_prices():
+def get_prices(now):
     # Define the URL to send the request to
     url = 'https://www.smard.de/nip-download-manager/nip/download/market-data'  # Replace with the actual URL
 
@@ -15,7 +15,7 @@ def get_prices():
     }
 
     # Get the current date and time
-    now = datetime.now()
+    #now = datetime.now()
 
     # Get the current day datetime starting at 00:00 hours
     current_day = datetime(now.year, now.month, now.day, 0, 0, 0)
