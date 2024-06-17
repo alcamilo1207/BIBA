@@ -7,8 +7,10 @@ import matplotlib.cm as cm
 import matplotlib as mpl
 import numpy as np
 import plotly.express as px
-from datetime import datetime
+from datetime import datetime, timedelta
 from millify import millify, prettify
+import locale
+locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 st.set_page_config(layout='wide')
 
@@ -22,14 +24,19 @@ def duration_to_color(all_durations, duration):
 def main():
     st.sidebar.title("User input data")
     generate = st.sidebar.button(label="Generate random schedule",use_container_width=True)
-    fixed_price = st.sidebar.checkbox(label="Fixed energy price?")
-    date_pick = st.sidebar.date_input(label="Select date",value=datetime.fromisoformat("2024-06-16"))
-    sb_container = st.sidebar.container(border=True)
-    with sb_container:
-        if fixed_price:
-            fixed_price_value = st.number_input(label="Energy price value",min_value=0.00,step=0.01)
-        else:    
-            pass
+    #fixed_price = st.sidebar.checkbox(label="Fixed energy price?")
+    current_hour = datetime.now().hour
+    if current_hour > 15:
+        date_pick = st.sidebar.date_input(label="Select date",) #,value=datetime.fromisoformat("2024-06-16")
+    else:
+        date_pick = st.sidebar.date_input(label="Select date",value=datetime.now()-timedelta(days=1))
+
+    #sb_container = st.sidebar.container(border=True)
+    # with sb_container:
+    #     if fixed_price:
+    #         fixed_price_value = st.number_input(label="Energy price value",min_value=0.00,step=0.01)
+    #     else:
+    #         pass
 
     # Scheduler data
     if generate:
@@ -136,10 +143,10 @@ def main():
         row1 = st.columns(2)
         row2 = st.columns(3)
         metrics = [
-            {"label": "Scheduler performance", "value": f"{performance:.2} €/kg x day"},
-            {"label": "Total energy cost", "value": f"{millify(total_cost,precision=2,prefixes=[' kWh', ' MWh', ' GWh'])} €/day"},
-            {"label": "Total energy usage", "value": f"{millify(total_energy,precision=2)}Wh"},
-            {"label": "Total production", "value": f"{prettify(int(np.ceil(total_production)),'.')} kg"},
+            {"label": "Scheduler performance (production/(energy × cost))", "value": locale.format_string("%.2f kg/(kWh × €)",performance)},
+            {"label": "Total energy cost", "value": locale.format_string("%.2f €",total_cost)},
+            {"label": "Total energy usage", "value": locale.format_string("%.2f kWh",total_energy)},
+            {"label": "Total production", "value": locale.format_string("%.0f kg",total_production)},
             {"label": "Total jobs completed", "value": f"{total_number_of_jobs} jobs"},
         ]
         for i,col in enumerate((row1 + row2)):
@@ -149,6 +156,11 @@ def main():
         #col3.metric("Humidity", "86%", "4%")
 
         st.plotly_chart(fig1,use_container_width=True)
+        with st.expander("Machine parameters"):
+            m_params = pd.DataFrame([[m.id,m.speed,m.EU] for m in scheduler.machines],columns=['Machine','Speed [kg/min]','Energy usage [kWh/min]'])
+            m_params.set_index('Machine')
+            st.dataframe(m_params,hide_index=True)
+
         st.plotly_chart(fig2, use_container_width=True)
 
         # Energy prices Data

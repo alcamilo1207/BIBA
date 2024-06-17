@@ -50,10 +50,8 @@ def get_prices(date):
         df = pd.DataFrame(list[1:])
 
         # Dropping last row
-        print(list[0])
         df.columns = list[0]
         df = df.drop(df.index[-1])
-        #df = df.drop(df.index[0])
 
         return df
     else:
@@ -92,5 +90,5 @@ def calculate_energy_cost(date,job_schedule,power_schedule):
     total_production = sizes.sum()
     total_energy = energies.sum()
 
-    performance = total_cost/total_production
+    performance = total_production/total_energy/total_cost
     return performance, total_cost, total_energy, total_production, total_number_of_jobs
