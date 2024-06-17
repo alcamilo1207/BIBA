@@ -19,7 +19,7 @@ def get_prices(date):
     current_day = datetime(date.year, date.month, date.day, 0, 0, 0)
 
     # Get the next day datetime starting at 00:00 hours (2 hours shift corrected)
-    start_datetime = current_day + timedelta(days=1) #- timedelta(hours=2)
+    start_datetime = current_day + timedelta(days=1) - timedelta(hours=2)
 
     # Get the other next day datetime starting at 00:00 hours
     end_datetime = start_datetime + timedelta(days=1)
