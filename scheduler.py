@@ -118,11 +118,12 @@ class Scheduler:
     def schedule_job(self,job, machine,idle_prob=0.1):
         if rd.random() > idle_prob:
             j_id = job.id
+            j_size = job.size
             m_id = machine.id
             total_EU = self.get_total_EU(job, machine)
             start_timestamp = machine.time
             machine.time += self.get_duration(job, machine)
-            self.schedule.append([j_id, m_id, start_timestamp, self.get_duration(job, machine), total_EU])
+            self.schedule.append([j_id, m_id, start_timestamp, self.get_duration(job, machine), total_EU,j_size])
             job.completed = True
         else:  # Idling job
             m_id = machine.id
@@ -133,7 +134,7 @@ class Scheduler:
             else:
                 duration = 1440 - machine.time
                 machine.time += duration
-            self.schedule.append([0, m_id, start_timestamp, duration, 0.0])
+            self.schedule.append([0, m_id, start_timestamp, duration, 0.0, 0.0])
 
     def plot_schedule(self):
         fig, ax = plt.subplots()
@@ -177,8 +178,8 @@ class Scheduler:
 
     def get_schedule(self):
         sch = self.schedule
-        new_sch = [[f"machine {i[1]}",i[4],f"job {i[0]}",self.convert_minutes_to_timestamp(i[2]),i[3]] for i in sch]
-        cols = ['assigned_to','energy','name','start_timestamp','actual_duration_int']
+        new_sch = [[f"machine {i[1]}",i[4],f"job {i[0]}",i[5],self.convert_minutes_to_timestamp(i[2]),i[3]] for i in sch]
+        cols = ['assigned_to','energy','name','size','start_timestamp','actual_duration_int']
         df = pd.DataFrame(new_sch,columns=cols)
         return df
 
