@@ -54,7 +54,10 @@ def main():
     prices_df = jr.get_prices(date_pick)
 
     # Metrics
-    performance, total_cost, total_energy, total_production, total_number_of_jobs = jr.calculate_energy_cost(date_pick, sch_df, pw_df[[pw_df.columns[-1]]])
+    #performance, total_cost, total_energy, total_production, total_number_of_jobs = jr.calculate_energy_cost(date_pick, sch_df, pw_df[[pw_df.columns[-1]]])
+    test = jr.calculate_energy_cost(date_pick, sch_df, pw_df[[pw_df.columns[-1]]])
+    st.write(np.shape(test))
+
 
     #Scheduler plot
     dates = pd.date_range('2022-01-01', periods=12, freq='2h')
@@ -140,18 +143,18 @@ def main():
         #Schedule
         st.subheader("Day-ahead job schedule and energy prices forecast")
 
-        row1 = st.columns(2)
-        row2 = st.columns(3)
-        metrics = [
-            {"label": "Scheduler performance (production/(energy × cost))", "value": locale.format_string("%.2f kg/(kWh × €)",performance)},
-            {"label": "Total energy cost", "value": locale.format_string("%.2f €",total_cost)},
-            {"label": "Total energy usage", "value": locale.format_string("%.2f kWh",total_energy)},
-            {"label": "Total production", "value": locale.format_string("%.0f kg",total_production)},
-            {"label": "Total jobs completed", "value": f"{total_number_of_jobs} jobs"},
-        ]
-        for i,col in enumerate((row1 + row2)):
-            cont = col.container(height=120)
-            cont.metric(metrics[i]["label"],metrics[i]["value"],)
+        # row1 = st.columns(2)
+        # row2 = st.columns(3)
+        # metrics = [
+        #     {"label": "Scheduler performance (production/(energy × cost))", "value": locale.format_string("%.2f kg/(kWh × €)",performance)},
+        #     {"label": "Total energy cost", "value": locale.format_string("%.2f €",total_cost)},
+        #     {"label": "Total energy usage", "value": locale.format_string("%.2f kWh",total_energy)},
+        #     {"label": "Total production", "value": locale.format_string("%.0f kg",total_production)},
+        #     {"label": "Total jobs completed", "value": f"{total_number_of_jobs} jobs"},
+        # ]
+        # for i,col in enumerate((row1 + row2)):
+        #     cont = col.container(height=120)
+        #     cont.metric(metrics[i]["label"],metrics[i]["value"],)
 
         #col3.metric("Humidity", "86%", "4%")
 
