@@ -1,6 +1,5 @@
 import pandas as pd
 import streamlit as st
-import json_req as jr
 import schedule_helper as shelp
 import plotly.graph_objects as go
 import matplotlib.cm as cm
@@ -13,6 +12,8 @@ import locale
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8')
 
 st.set_page_config(layout='wide')
+
+region_col_name = "Germany/Luxembourg [€/MWh] Original resolutions"
 
 def duration_to_color(all_durations, duration):
     cmap = cm.plasma  # choose a colormap
@@ -29,7 +30,7 @@ def main():
     if current_hour > 15:
         date_pick = st.sidebar.date_input(label="Select date") #,value=datetime.fromisoformat("2024-06-16")
     else:
-        date_pick = st.sidebar.date_input(label="Select date",value=datetime.now()+timedelta(days=1)) #+timedelta(days=1)
+        date_pick = st.sidebar.date_input(label="Select date",value=datetime.now()+timedelta(days=0)) # timedelta is kept for debuging purposes
 
     #sb_container = st.sidebar.container(border=True)
     # with sb_container:
@@ -39,22 +40,23 @@ def main():
     #         pass
 
     # Scheduler data
+    help_obj = shelp.Helper()
     if generate:
-        scheduler = shelp.get_scheduler(load=False)
-
+        scheduler = help_obj.get_scheduler(load=False)
     else:
-        scheduler = shelp.get_scheduler(load=True)
+        scheduler = help_obj.get_scheduler(load=True)
 
     sch_df = scheduler.get_schedule()
 
     # power data
-    pw_df = shelp.get_power(scheduler)
+    pw_df = help_obj.get_power(scheduler)
 
     # Energy prices data
-    prices_df = jr.get_prices(date_pick)
+    ep_obj = shelp.EnergyPrices(region_col_name)
+    prices_df = ep_obj.get_prices(date_pick)
 
     # Metrics
-    performance, total_cost, total_energy, total_production, total_number_of_jobs = jr.calculate_energy_cost(prices_df, sch_df, pw_df[[pw_df.columns[-1]]])
+    performance, total_cost, total_energy, total_production, total_number_of_jobs = ep_obj.calculate_energy_cost(prices_df, sch_df, pw_df[[pw_df.columns[-1]]])
 
     #Scheduler plot
     dates = pd.date_range(datetime.now().strftime("%Y-%m-%d"), periods=12, freq='2h')
