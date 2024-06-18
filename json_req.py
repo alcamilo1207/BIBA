@@ -5,6 +5,8 @@ import streamlit as st
 from datetime import datetime,timedelta
 import numpy as np
 
+region_col_name = "Germany/Luxembourg [€/MWh] Original resolutions"
+
 def get_prices(date):
     # Define the URL to send the request to
     url = 'https://www.smard.de/nip-download-manager/nip/download/market-data'  # Replace with the actual URL
@@ -19,7 +21,7 @@ def get_prices(date):
     current_day = datetime(date.year, date.month, date.day, 0, 0, 0)
 
     # Get the next day datetime starting at 00:00 hours (2 hours shift corrected)
-    start_datetime = current_day + timedelta(days=1) - timedelta(hours=2)
+    start_datetime = current_day + timedelta(days=1) #- timedelta(hours=2)
 
     # Get the other next day datetime starting at 00:00 hours
     end_datetime = start_datetime + timedelta(days=1)
@@ -49,8 +51,18 @@ def get_prices(date):
         # Convert string to data frame
         df = pd.DataFrame(list[1:])
 
+        # Check if dataset is empty
+        date_range_start = pd.date_range(datetime.now().strftime("%Y/%m/%d"), periods=24, freq='h')
+        date_range_end = pd.date_range(date_range_start[1], periods=24, freq='h')
+        if df.iloc[0,0] == 'No data for submitted query\r':
+            df = pd.DataFrame(np.full((24,3),0.0),columns=['Start date','End date', region_col_name])
+            df['Start date'] = date_range_end
+            df['End date'] = date_range_end
+            return df
+
+
         # Dropping last row
-        df.columns = list[0]
+        df.columns = list[0][:df.shape[1]]
         df = df.drop(df.index[-1])
 
         return df
@@ -65,16 +77,19 @@ def get_price_at_minute(price_hourly_values,minute):
     price = price_hourly_values[h]
     return price
 
-def calculate_energy_cost(date,job_schedule,power_schedule):
-    df = get_prices(date)
-    prices_str = df['Germany/Luxembourg [€/MWh] Original resolutions'].values
-    try:
-        prices = [float(item) for item in prices_str]
-    except Exception as e:
-        if str(e) == "could not convert string to float: '-'":
-            return "Not available"
-        else:
-            return str(e)
+def calculate_energy_cost(prices_df,job_schedule,power_schedule):
+    if prices_df.shape == (24,19):
+        prices_str = prices_df[region_col_name].values
+        try:
+            prices = [float(item) for item in prices_str]
+        except Exception as e:
+            if str(e) == "could not convert string to float: '-'":
+                prices = np.full(24,0.0)
+                print("Day-ahead prices not available")
+            else:
+                print(e)
+    else:
+        prices = np.full(24,0.0)
 
     power_values = power_schedule.values/(60*1000)
     energies = job_schedule['energy'].values
@@ -90,5 +105,9 @@ def calculate_energy_cost(date,job_schedule,power_schedule):
     total_production = sizes.sum()
     total_energy = energies.sum()
 
-    performance = total_production/(total_energy*total_cost)
+    if prices_df.shape == (24,19):
+        performance = total_production/(total_energy*total_cost)
+    else:
+        performance = 0.0
+
     return performance, total_cost, total_energy, total_production, total_number_of_jobs

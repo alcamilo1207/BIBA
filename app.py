@@ -27,9 +27,9 @@ def main():
     #fixed_price = st.sidebar.checkbox(label="Fixed energy price?")
     current_hour = datetime.now().hour
     if current_hour > 15:
-        date_pick = st.sidebar.date_input(label="Select date",) #,value=datetime.fromisoformat("2024-06-16")
+        date_pick = st.sidebar.date_input(label="Select date") #,value=datetime.fromisoformat("2024-06-16")
     else:
-        date_pick = st.sidebar.date_input(label="Select date",value=datetime.now()-timedelta(days=1))
+        date_pick = st.sidebar.date_input(label="Select date",value=datetime.now()-timedelta(days=1)) #+timedelta(days=1)
 
     #sb_container = st.sidebar.container(border=True)
     # with sb_container:
@@ -54,15 +54,12 @@ def main():
     prices_df = jr.get_prices(date_pick)
 
     # Metrics
-    performance, total_cost, total_energy, total_production, total_number_of_jobs = jr.calculate_energy_cost(date_pick, sch_df, pw_df[[pw_df.columns[-1]]])
+    performance, total_cost, total_energy, total_production, total_number_of_jobs = jr.calculate_energy_cost(prices_df, sch_df, pw_df[[pw_df.columns[-1]]])
 
     #Scheduler plot
-    dates = pd.date_range('2022-01-01', periods=12, freq='2h')
+    dates = pd.date_range(datetime.now().strftime("%Y-%m-%d"), periods=12, freq='2h')
     x_values = [i*60*2 for i in range(12)]
     x_values3 = [prices_df['Start date'][i*2] for i in range(12)]
-
-    print(x_values)
-    print("\n",x_values3)
 
     fig1 = px.bar(sch_df,
                  y="assigned_to",
