@@ -38,7 +38,7 @@ def get_prices(date):
     picked_day = datetime(date.year, date.month, date.day)
 
     # Get the next day datetime starting at 00:00 hours (2 hours shift corrected)
-    start_datetime = picked_day + timedelta(days=1) #- timedelta(hours=2)
+    start_datetime = picked_day + timedelta(days=1) - timedelta(hours=2)
     print("start_datetime",start_datetime)
     st.write(start_datetime)
 

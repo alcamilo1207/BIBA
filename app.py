@@ -29,7 +29,7 @@ def main():
     if current_hour > 15:
         date_pick = st.sidebar.date_input(label="Select date") #,value=datetime.fromisoformat("2024-06-16")
     else:
-        date_pick = st.sidebar.date_input(label="Select date",value=datetime.now()+timedelta(days=1)) #+timedelta(days=1)
+        date_pick = st.sidebar.date_input(label="Select date",value=datetime.now()-timedelta(days=1)) #+timedelta(days=1)
 
     #sb_container = st.sidebar.container(border=True)
     # with sb_container:
